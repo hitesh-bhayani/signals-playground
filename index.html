@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signals Playground</title>
+<meta name="description" content="The same reactive graph and benchmarks running on Vue reactivity, Preact Signals, Solid, alien-signals and the TC39 Signals polyfill.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <span class="badge">Vue · Preact · Solid · alien-signals · TC39</span>
+    <h1>Signals Playground</h1>
+    <p class="lead">Signals are becoming the shared reactivity model of the web: Vue, Preact, Solid, Angular and a TC39 proposal all use them. This page runs the <em>same</em> reactive graph through five implementations, so you can see where they agree and where they differ.</p>
+  </header>
+
+  <section>
+    <h2>1. The diamond</h2>
+    <p class="muted">
+      <code>b = a × 2</code>, <code>c = a × 3</code>, <code>d = b + c</code>, plus an effect that reads <code>d</code>,
+      and one computed that nobody reads. Move the slider and watch the counters.
+    </p>
+    <div class="control">
+      <label for="a">a = <output id="a-value">1</output></label>
+      <input id="a" type="range" min="1" max="20" value="1">
+      <button id="burst" class="btn">Write a 11× in one batch() (ends where it started)</button>
+    </div>
+    <div class="table-wrap">
+      <table id="diamond">
+        <thead>
+          <tr>
+            <th>Library</th><th>d</th><th>d ran</th><th>effect ran</th><th>unread computed ran</th><th>effects</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <ul class="notes">
+      <li><strong>Glitch-free:</strong> per update, <code>d</code> runs once, never with a half-updated <code>b</code>/<code>c</code>.</li>
+      <li><strong>Lazy vs eager:</strong> Solid memos compute eagerly, so the unread computed still runs. The others only compute on read.</li>
+      <li><strong>batch():</strong> <code>@vue/reactivity</code> has no public batch, so its effect runs once per write. In Vue apps the component scheduler does the batching.</li>
+      <li><strong>TC39:</strong> the proposal ships no <code>effect()</code>. It's built here on <code>Signal.subtle.Watcher</code> and runs on a microtask.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. Benchmark (in your browser)</h2>
+    <p class="muted">Pull-based workloads: write a signal, then read the graph. Median of 7 runs after warm-up. Absolute numbers depend on your machine and browser; compare the ratios.</p>
+    <button id="run" class="btn primary">Run benchmark</button>
+    <span id="status" class="muted"></span>
+    <div class="table-wrap">
+      <table id="bench"><thead></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Same counter, five APIs</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <pre><code id="snippet"></code></pre>
+  </section>
+
+  <footer>
+    Built by <a href="https://github.com/hitesh-bhayani">Hitesh Bhayani</a> ·
+    <a href="https://github.com/hitesh-bhayani/signals-playground">Source on GitHub</a> · MIT
+  </footer>
+</main>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

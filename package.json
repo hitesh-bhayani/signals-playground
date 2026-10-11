@@ -1,0 +1,25 @@
+{
+  "name": "signals-playground",
+  "version": "1.0.0",
+  "description": "Same demos and benchmarks across Vue reactivity, Preact Signals, Solid, alien-signals and the TC39 Signals polyfill.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --conditions=browser --test test/adapters.test.js"
+  },
+  "author": "Hitesh Bhayani",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "vite": "8.3.4"
+  },
+  "dependencies": {
+    "@preact/signals-core": "1.14.4",
+    "@vue/reactivity": "3.5.43",
+    "alien-signals": "3.2.1",
+    "signal-polyfill": "0.2.2",
+    "solid-js": "1.9.17"
+  },
+  "private": true
+}
